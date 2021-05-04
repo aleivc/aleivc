@@ -13,3 +13,42 @@ export default function Home() {
     </div>
   )
 }
+
+
+class Developer {
+  constructor(aleivc) {
+
+  }
+
+  isInFrontOfComputer() {
+    return false;
+  }
+
+  openChromeBrowser() {
+
+  }
+
+  copyCodeFromStackOverflow() {
+
+  }
+
+  pasteCodeInIDE() {
+
+  }
+
+  feelLikeAProfessionalDeveloper() {
+
+  }
+}
+
+function defee() {
+
+}
+
+          const dev = new Developer('Aleivc');
+          while (dev.isInFrontOfComputer()){
+            dev.openChromeBrowser();
+            dev.copyCodeFromStackOverflow();
+            dev.pasteCodeInIDE();
+            dev.feelLikeAProfessionalDeveloper();
+          }
