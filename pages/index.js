@@ -7,6 +7,7 @@ export default function Home() {
     <div className={styles.container}>
       <h1>aleivc.com</h1>
       <h2>that's my website, huha!</h2>
+      <h2>some change again</h2>
     </div>
   )
 }
