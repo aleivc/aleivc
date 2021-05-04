@@ -20,4 +20,4 @@ jobs:
         run: |
           docker build -f Dockerfile -t aleivc .
           docker tag aleivc aleivc/aleivc:latest
-          docker push aleivc/images:latest
+          docker push aleivc/aleivc:latest
