@@ -1,16 +1,20 @@
-### Hi there 👋
+### Hi there 👋 <img align="right" src="https://media.giphy.com/media/WUlplcMpOCEmTGBtBW/giphy.gif" width="30">
+<h3>聪明的妖怪录下了唐僧的紧箍咒 :smiley:</h3>
+<h2> I'm Aleivc </h2>  
+<img align="right" src="https://aleivc-others.oss-cn-beijing.aliyuncs.com/developer.png?Expires=1620134233&OSSAccessKeyId=TMP.3KgYAEZHfPbQCtED3ZLgQfhcbGZuDLauYVxSP48nfEjurkdwG8uBvMjtGC9N2jopuzDkgD8dErGDzatsTtq2tDwtxVAtWd&Signature=3NZlea1e7DjXcSOxPTqr%2FcGrya0%3D" />  
 
-<!--
-**aleivc/aleivc** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+- 🤔 &nbsp; Exploring new technologies and developing website.
 
-Here are some ideas to get you started:
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+- 🌱 &nbsp; Learning about Typescript, NextJS.  
+
+
+- ✍️ &nbsp; Pursuing Web Development as hobbies/side hustles.
+
+<br />
+<br />
+<br />
+<br />
+
+
+A passionate fullstack developer from China
