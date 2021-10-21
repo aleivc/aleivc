@@ -1,5 +1,7 @@
+import Welcome from "./components/welcome/Welcome";
+
 function App() {
-  return <div className="App">hello, world.</div>;
+  return <Welcome />;
 }
 
 export default App;
