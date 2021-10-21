@@ -1,10 +1,5 @@
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">www.aleivc.com</header>
-      <body>another change</body>
-    </div>
-  );
+  return <div className="App">hello, world.</div>;
 }
 
 export default App;
