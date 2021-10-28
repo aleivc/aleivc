@@ -1,9 +1,9 @@
-FROM node:alpine
+FROM node:10
 RUN mkdir -p /usr/src/next-website/test1
 WORKDIR /usr/src/next-website/test1
 COPY . .
 RUN yarn cache clean && yarn --update-checksums
-RUN yarn && yarn build 
+RUN yarn build 
 
 EXPOSE 3000
 
