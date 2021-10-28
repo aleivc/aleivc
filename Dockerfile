@@ -1,10 +1,9 @@
-FROM node:14.13.1-slim as build
+FROM node:alpine
 RUN mkdir -p /usr/src/next-website/test1
 WORKDIR /usr/src/next-website/test1
 COPY . .
 RUN yarn cache clean && yarn --update-checksums
-RUN yarn install
-RUN yarn build
+RUN yarn && yarn build 
 
 EXPOSE 3000
 
