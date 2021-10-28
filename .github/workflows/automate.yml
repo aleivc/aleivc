@@ -19,6 +19,10 @@ jobs:
 
       - name: build and push image
         run: |
+          bundle update webpacker
+          rails webpacker:binstubs
+          yarn upgrade @rails/webpacker --latest
+          yarn upgrade webpack-dev-server --latest
           docker build -f Dockerfile -t aleivc .
           docker tag aleivc aleivc/aleivc:latest
           docker push aleivc/aleivc:latest
