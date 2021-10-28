@@ -1,4 +1,4 @@
-FROM node:10
+FROM node:12
 RUN mkdir -p /usr/src/next-website/test1
 WORKDIR /usr/src/next-website/test1
 COPY . .
