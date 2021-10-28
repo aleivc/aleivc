@@ -1,24 +1,34 @@
 import "./menu.scss";
 
-export default function({menuOpen}){
+const conf = [
+	{
+		text: "intro"
+	},
+	{
+		text: "profile"
+	},
+	{
+		text: "works"
+	},
+	{
+		text: "testimonials"
+	},
+	{
+		text: "contact"
+	},
+];
+
+export default function({menuOpen, setMenuOpen}){
 	return (
 		<div className={"menu " + (menuOpen && "active")}>
 			<ul>
-				<li>
-					<a href="#Intro">Intro</a>
-				</li>
-				<li>
-					<a href="#profile">profile</a>
-				</li>
-				<li>
-					<a href="#works">works</a>
-				</li>
-				<li>
-					<a href="#testimonials">testimonials</a>
-				</li>
-				<li>
-					<a href="#contact">contact</a>
-				</li>
+					{
+						conf.map(item => (			
+							<li key={item.text} onClick={() => setMenuOpen(false)}>
+								<a href={"#" + item.text}>{item.text}</a>
+							</li>
+						))
+					}
 			</ul>
 		</div>
 	)
