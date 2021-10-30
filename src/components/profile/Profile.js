@@ -24,10 +24,12 @@ export default function () {
       </ul>
       <div className="container">
         {content.map((item) => (
-          <div className="item">
-            <img src={item.img} alt="" />
-            <h3>{item.name}</h3>
-          </div>
+          <a href="#works">
+            <div key={item.name} className="item">
+              <img src={item.img} alt="" />
+              <h3>{item.name}</h3>
+            </div>
+          </a>
         ))}
       </div>
     </div>
