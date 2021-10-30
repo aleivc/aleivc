@@ -46,36 +46,34 @@ export default function () {
       </div>
       <div className="right">
         <div className="wrapper">
-          <h2>你好，我叫</h2>
-          <h1>雷红尔</h1>
-          <h3>
-            从事于前端开发, 擅长于 <span ref={textRef}></span>
-          </h3>
-          <br />
-          <br />
-          <br />
-          <h4>常混迹于这些地方</h4>
-          <br />
-          <ul>
-            {icons.map((icon) => (
-              <li key={icon.src}>
-                <a href={icon.redirect} target="_blank">
-                  <img src={icon.src} alt="" />
-                </a>
-              </li>
-            ))}
-          </ul>
-          <br />
-          <h4>手机号同微信，也可以通过邮件联系我</h4>
-          <br />
-          <div className="info">
-            <div className="itemContainer">
-              <Person className="icon" />
-              <span>+86 15129302630 </span>
-            </div>
-            <div className="itemContainer">
-              <Mail className="icon" />
-              <span>aleivc@163.com</span>
+          <div className="up">
+            <h2>你好，我叫</h2>
+            <h1>雷红尔</h1>
+            <h3>
+              从事于前端开发, 擅长于 <span ref={textRef}></span>
+            </h3>
+          </div>
+          <div className="down">
+            <h4>常混迹于这些地方</h4>
+            <ul>
+              {icons.map((icon) => (
+                <li key={icon.src}>
+                  <a href={icon.redirect} target="_blank">
+                    <img src={icon.src} alt="" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <h4>手机号同微信，也可以通过邮件联系我</h4>
+            <div className="info">
+              <div className="itemContainer">
+                <Person className="icon" />
+                <span>+86 151 2930 2630 </span>
+              </div>
+              <div className="itemContainer">
+                <Mail className="icon" />
+                <span>aleivc@163.com</span>
+              </div>
             </div>
           </div>
         </div>
