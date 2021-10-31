@@ -27,7 +27,8 @@ const icons = [
     redirect: "https://www.zhihu.com/people/lei-hong-er",
   },
 ];
-export default function () {
+
+const Intro = () => {
   const textRef = React.useRef();
   React.useEffect(() => {
     init(textRef.current, {
@@ -83,4 +84,6 @@ export default function () {
       </div>
     </div>
   );
-}
+};
+
+export default Intro;

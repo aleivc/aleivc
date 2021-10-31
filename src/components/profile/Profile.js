@@ -2,7 +2,7 @@ import React from "react";
 import "./profile.scss";
 import { data } from "../../mock/data";
 
-export default function () {
+const Profile = () => {
   const [selected, setSelected] = React.useState(data[0]["title"]);
   const [content, setContent] = React.useState(data[0]["content"]);
   return (
@@ -24,7 +24,7 @@ export default function () {
       </ul>
       <div className="container">
         {content.map((item) => (
-          <a href="#works">
+          <a key={item.name} href="#works">
             <div key={item.name} className="item">
               <img src={item.img} alt="" />
               <h3>{item.name}</h3>
@@ -34,4 +34,6 @@ export default function () {
       </div>
     </div>
   );
-}
+};
+
+export default Profile;

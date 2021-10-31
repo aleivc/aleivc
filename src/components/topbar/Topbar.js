@@ -2,7 +2,7 @@ import "./topbar.scss";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
 
-export default function ({ menuOpen, setMenuOpen }) {
+const Topbar = ({ menuOpen, setMenuOpen }) => {
   return (
     <div className={"topbar " + (menuOpen && "active")}>
       <div className="wrapper">
@@ -34,4 +34,6 @@ export default function ({ menuOpen, setMenuOpen }) {
       </div>
     </div>
   );
-}
+};
+
+export default Topbar;

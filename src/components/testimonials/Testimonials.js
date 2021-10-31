@@ -18,13 +18,13 @@ const articles = [
   },
 ];
 
-export default function () {
+const Testimonials = () => {
   return (
     <div className="testimonials" id="testimonials">
       <h1>最近文章</h1>
       <div className="container">
         {articles.map((item) => (
-          <div className="card">
+          <div key={item.title} className="card">
             <div className="top">
               <img src={item.img} alt="" />
             </div>
@@ -36,4 +36,6 @@ export default function () {
       </div>
     </div>
   );
-}
+};
+
+export default Testimonials;

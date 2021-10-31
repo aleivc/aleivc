@@ -1,7 +1,7 @@
 import React from "react";
 import "./contact.scss";
 
-export default function () {
+const Contact = () => {
   const [msg, setMsg] = React.useState(false);
   return (
     <div className="contact" id="contact">
@@ -25,4 +25,6 @@ export default function () {
       </div>
     </div>
   );
-}
+};
+
+export default Contact;

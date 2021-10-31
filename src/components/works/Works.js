@@ -2,7 +2,7 @@ import React from "react";
 import "./works.scss";
 import { data } from "../../mock/data";
 
-export default function () {
+const Works = () => {
   const source = data[0]["content"];
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const handleClick = (way) => {
@@ -19,7 +19,7 @@ export default function () {
         style={{ transform: `translateX(-${currentSlide * 100}vw)` }}
       >
         {source.map((item) => (
-          <div className="container">
+          <div key={item.name} className="container">
             <div className="item">
               <div className="left">
                 <div className="leftContainer">
@@ -52,4 +52,6 @@ export default function () {
       />
     </div>
   );
-}
+};
+
+export default Works;
