@@ -24,14 +24,21 @@ const Testimonials = () => {
       <h1>最近文章</h1>
       <div className="container">
         {articles.map((item) => (
-          <div key={item.title} className="card">
-            <div className="top">
-              <img src={item.img} alt="" />
+          <a
+            key={item.title}
+            href="https://github.com/aleivc/aleivc/wiki"
+            target="_blank"
+            className="card"
+          >
+            <div>
+              <div className="top">
+                <img src={item.img} alt="" />
+              </div>
+              <div className="bottom">
+                <h4>{item.title}</h4>
+              </div>
             </div>
-            <div className="bottom">
-              <h4>{item.title}</h4>
-            </div>
-          </div>
+          </a>
         ))}
       </div>
     </div>
