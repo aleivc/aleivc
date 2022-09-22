@@ -73,4 +73,3 @@ export const data = [
     ],
   },
 ];
-// nthing for test
