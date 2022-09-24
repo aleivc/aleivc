@@ -8,7 +8,7 @@ import Testimonials from "../../components/testimonials/Testimonials";
 import Contact from "../../components/contact/Contact";
 import Menu from "../../components/menu/Menu";
 
-import "./index.scss";
+// import "./index.scss";
 
 function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
