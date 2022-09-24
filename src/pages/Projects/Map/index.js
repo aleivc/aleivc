@@ -1,7 +1,9 @@
 import mapboxgl from "mapbox-gl";
 import { useState, useEffect, useRef } from "react";
 import useDarkMode from "../../../hooks/useDarkMode";
-mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_KEY;
+mapboxgl.accessToken =
+  process.env.REACT_APP_MAPBOX_KEY ||
+  "pk.eyJ1IjoiYWxlaXZjIiwiYSI6ImNreTJjNGc2azBrZ2MydnJtbDY1bWVkZGsifQ.q71gMIIPSTNoz6VbWLUanw";
 
 const Map = () => {
   const mapContainer = useRef(null);
