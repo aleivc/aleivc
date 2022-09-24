@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^12.1.10",
     "autoprefixer": "^10.4.12",
     "ityped": "^1.0.3",
+    "mapbox-gl": "^2.10.0",
     "node-sass": "^6",
     "postcss": "^8.4.16",
     "prettier": "^2.7.1",
