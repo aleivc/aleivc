@@ -1,46 +1,28 @@
-import { FaMoon, FaSun } from "react-icons/fa";
-import useDarkMode from "../../hooks/useDarkMode";
 import SideBar from "./SideBar";
 import Map from "./Map/index";
 
 function Projects() {
   return (
-    <>
+    <div className="flex">
       <SideBar />
-      <div className="flex flex-col h-screen ml-16">
-        <ThemeIcon />
-        <Map />
-      </div>
-    </>
-  );
-}
+      <ul className="w-64 h-screen ml-16 pt-6 space-y-2 bg-gray-200 dark:bg-gray-800">
+        <li className="mx-2 p-2 rounded border border-dashed border-gray-500 cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-700">
+          <p className="text-gray-600 dark:text-gray-500">点集合</p>
+          <p className="text-gray-500 dark:text-gray-600">
+            我去过的地方, 老家, 现居
+          </p>
+        </li>
 
-const ThemeIcon = () => {
-  const [darkTheme, setDarkTheme] = useDarkMode();
-  const handleMode = () => setDarkTheme(!darkTheme);
-  return (
-    <div className="flex items-center justify-end h-16 m-0 px-8 bg-gray-200 dark:bg-gray-800 overflow-hidden">
-      <div onClick={handleMode}>
-        {darkTheme ? (
-          <FaSun
-            size="24"
-            className="text-gray-500
-        transition duration-300 ease-in-out
-        hover:text-yellow-400
-        cursor-pointer"
-          />
-        ) : (
-          <FaMoon
-            size="24"
-            className="text-gray-500
-        transition duration-300 ease-in-out
-        hover:text-yellow-400
-        cursor-pointer"
-          />
-        )}
+        <li className="mx-2 p-2 rounded border border-dashed border-gray-500 cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-700">
+          <p className="text-gray-600 dark:text-gray-500">路线</p>
+          <p className="text-gray-500 dark:text-gray-600">包裹，快递追踪</p>
+        </li>
+      </ul>
+      <div className="flex-grow">
+        <Map />
       </div>
     </div>
   );
-};
+}
 
 export default Projects;

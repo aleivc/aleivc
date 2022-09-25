@@ -1,24 +1,57 @@
-import { BsPlus, BsFillLightningFill } from "react-icons/bs";
-import { FaFire, FaPoo } from "react-icons/fa";
+import { FaMoon, FaSun } from "react-icons/fa";
+import useDarkMode from "../../../hooks/useDarkMode";
+import { Link } from "react-router-dom";
+
+import routes from "../../../routes";
 
 function SideBar() {
+  const [darkTheme, setDarkTheme] = useDarkMode();
+  const handleMode = () => setDarkTheme(!darkTheme);
+
   return (
-    <div className="fixed top-0 left-0 h-screen w-16 flex flex-col bg-white dark:bg-gray-900 text-white shadow-lg">
-      <SideBarIcon icon={<FaFire size="28" />} />
-      <SideBarIcon icon={<BsPlus size="32" />} />
-      <SideBarIcon icon={<BsFillLightningFill size="20" />} />
-      <Divider />
-      <SideBarIcon icon={<FaPoo size="20" />} />
+    <div className="fixed top-0 left-0 w-16 h-screen py-3 flex flex-col justify-between bg-gray-200 dark:bg-gray-900 text-white shadow-lg">
+      <div>
+        {routes.map((item) => {
+          return (
+            <Link to={item.path} key={item.path}>
+              <SideBarIcon icon={item.icon} tooltip={item.name} />
+              {item.divider ? <Divider /> : null}
+            </Link>
+          );
+        })}
+      </div>
+      <div
+        onClick={handleMode}
+        className="flex items-center justify-center h-12"
+      >
+        {darkTheme ? (
+          <FaSun
+            size="24"
+            className="text-gray-500
+        transition duration-300 ease-in-out
+        hover:text-yellow-400
+        cursor-pointer"
+          />
+        ) : (
+          <FaMoon
+            size="24"
+            className="text-gray-500
+        transition duration-300 ease-in-out
+        hover:text-yellow-400
+        cursor-pointer"
+          />
+        )}
+      </div>
     </div>
   );
 }
 
-const SideBarIcon = ({ icon, text = "tooltip 💡 " }) => {
+const SideBarIcon = ({ icon, tooltip = "tooltip 💡 " }) => {
   return (
     <div
       className="relative
         flex items-center justify-center
-        h-12 w-12 mt-2 mb-2 mx-auto
+        h-12 w-12 my-2 mx-auto
         bg-gray-400 hover:bg-green-600 dark:bg-gray-800
         text-green-500 hover:text-white
         rounded-3xl hover:rounded-xl
@@ -35,7 +68,7 @@ const SideBarIcon = ({ icon, text = "tooltip 💡 " }) => {
         text-xs font-bold
         transition-all duration-100 scale-0 origin-left group-hover:scale-100"
       >
-        {text}
+        {tooltip} 💡
       </span>
     </div>
   );
@@ -43,8 +76,8 @@ const SideBarIcon = ({ icon, text = "tooltip 💡 " }) => {
 
 const Divider = () => (
   <hr
-    className="bg-gray-200 dark:bg-gray-800
-        border border-gray-200 dark:border-gray-800 rounded-full
+    className="bg-gray-100 dark:bg-gray-800
+        border border-gray-400 dark:border-gray-800 rounded-full
         mx-2"
   />
 );

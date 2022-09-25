@@ -1,27 +1,48 @@
-import { useState } from "react";
-
-import TopBar from "../../components/topbar/Topbar";
-import Intro from "../../components/intro/Intro";
-import Profile from "../../components/profile/Profile";
-import Works from "../../components/works/Works";
-import Testimonials from "../../components/testimonials/Testimonials";
-import Contact from "../../components/contact/Contact";
-import Menu from "../../components/menu/Menu";
-
-// import "./index.scss";
-
 function Home() {
-  const [menuOpen, setMenuOpen] = useState(false);
   return (
-    <div className="app">
-      <TopBar menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
-      <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
-      <div className="sections">
-        <Intro />
-        <Profile />
-        <Works />
-        <Testimonials />
-        <Contact />
+    <div className="h-screen p-4 bg-gray-500">
+      <div className="flex-1 items-center justify-center">
+        <ul className="grid grid-cols-4 gap-8 text-center">
+          <li className="bg-gray-400 rounded-lg shadow-xl">
+            <div className="h-36">some</div>
+          </li>
+          <li className="bg-gray-400 rounded-lg shadow-xl">
+            <div className="h-36"></div>
+          </li>
+          <li className="bg-gray-400 rounded-lg shadow-xl">
+            <div className="h-36"></div>
+          </li>
+          <li className="bg-gray-400 rounded-lg shadow-xl">
+            <div className="h-36"></div>
+          </li>
+          <li className="col-span-2 bg-gray-400 rounded-lg shadow-xl">
+            <div className="h-36"></div>
+          </li>
+          <li className="bg-gray-400 rounded-lg shadow-xl">
+            <div className="h-36"></div>
+          </li>
+          <li className="bg-gray-400 rounded-lg shadow-xl">
+            <div className="h-36"></div>
+          </li>
+          <li className="bg-gray-400 rounded-lg shadow-xl">
+            <div className="h-36"></div>
+          </li>
+          <li className="col-span-2 bg-gray-400 rounded-lg shadow-xl">
+            <div className="h-36"></div>
+          </li>
+          <li className="bg-gray-400 rounded-lg shadow-xl">
+            <div className="h-36"></div>
+          </li>
+          <li className="bg-gray-400 rounded-lg shadow-xl">
+            <div className="h-36"></div>
+          </li>
+          <li className="bg-gray-400 rounded-lg shadow-xl">
+            <div className="h-36"></div>
+          </li>
+          <li className="col-span-2 bg-gray-400 rounded-lg shadow-xl">
+            <div className="h-36"></div>
+          </li>
+        </ul>
       </div>
     </div>
   );

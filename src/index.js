@@ -1,33 +1,27 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import "./index.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-import Projects from "./pages/Projects/index";
-import SideBar2 from "./pages/Projects/SideBar2/index";
-import SideBar3 from "./pages/Projects/SideBar3/index";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Projects />,
-  },
-  {
-    path: "/side-bar/2",
-    element: <SideBar2 />,
-  },
-  {
-    path: "/side-bar/3",
-    element: <SideBar3 />,
-  },
-]);
+import routes from "./routes";
+import BasicLayout from "./layout/BasicLayout";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <BrowserRouter>
+      <BasicLayout>
+        <Routes>
+          {routes.map((item) => {
+            return (
+              <Route key={item.path} path={item.path} element={item.main} />
+            );
+          })}
+        </Routes>
+      </BasicLayout>
+    </BrowserRouter>
   </React.StrictMode>
 );
