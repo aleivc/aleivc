@@ -2,16 +2,14 @@ import { useRef, Suspense } from "react";
 import {
   GizmoHelper,
   GizmoViewcube,
-  useGLTF,
+  Html,
   OrbitControls,
-  useProgress,
 } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
+import Shoe from "./Shoe";
 
 const ThreeComp = () => {
-  const ref = useRef();
   const controlsRef = useRef();
-  const { nodes, materials } = useGLTF("/models/shoe-draco.glb");
   return (
     <div className="flex">
       <ul className="w-64 h-screen pt-6 space-y-2 bg-gray-200 dark:bg-gray-800">
@@ -31,57 +29,8 @@ const ThreeComp = () => {
       </ul>
       <div className="flex-grow">
         <Canvas camera={{ position: [0, 0, 2.75] }}>
-          <Suspense fallback={null}>
-            <group ref={ref} dispose={null}>
-              <mesh
-                castShadow
-                receiveShadow
-                geometry={nodes.shoe.geometry}
-                material={materials.laces}
-              />
-              <mesh
-                castShadow
-                receiveShadow
-                geometry={nodes.shoe_1.geometry}
-                material={materials.mesh}
-              />
-              <mesh
-                castShadow
-                receiveShadow
-                geometry={nodes.shoe_2.geometry}
-                material={materials.caps}
-              />
-              <mesh
-                castShadow
-                receiveShadow
-                geometry={nodes.shoe_3.geometry}
-                material={materials.inner}
-              />
-              <mesh
-                castShadow
-                receiveShadow
-                geometry={nodes.shoe_4.geometry}
-                material={materials.sole}
-              />
-              <mesh
-                castShadow
-                receiveShadow
-                geometry={nodes.shoe_5.geometry}
-                material={materials.stripes}
-              />
-              <mesh
-                castShadow
-                receiveShadow
-                geometry={nodes.shoe_6.geometry}
-                material={materials.band}
-              />
-              <mesh
-                castShadow
-                receiveShadow
-                geometry={nodes.shoe_7.geometry}
-                material={materials.patch}
-              />
-            </group>
+          <Suspense fallback={<Html center>loading...</Html>}>
+            <Shoe />
           </Suspense>
           <ambientLight intensity={0.1} />
           <pointLight color="white" intensity={1} position={[10, 10, 10]} />
