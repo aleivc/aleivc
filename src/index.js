@@ -10,6 +10,8 @@ import BasicLayout from "./layout/BasicLayout";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
+// docker 挂了，为什么?
+
 root.render(
   <React.StrictMode>
     <BrowserRouter>
