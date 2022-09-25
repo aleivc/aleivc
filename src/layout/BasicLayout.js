@@ -1,4 +1,4 @@
-import SideBar from "../pages/Projects/SideBar";
+import SideBar from "../components/SideBar";
 
 const BasicLayout = ({ children }) => {
   return (

@@ -1,12 +1,11 @@
 import { FaMoon, FaSun } from "react-icons/fa";
-import useDarkMode from "../../../hooks/useDarkMode";
 import { Link } from "react-router-dom";
 
-import routes from "../../../routes";
+import routes from "../../routes";
+import { useTheme } from "../../hooks/useDarkMode";
 
 function SideBar() {
-  const [darkTheme, setDarkTheme] = useDarkMode();
-  const handleMode = () => setDarkTheme(!darkTheme);
+  const { dark, setDark } = useTheme();
 
   return (
     <div className="fixed top-0 left-0 w-16 h-screen py-3 flex flex-col justify-between bg-gray-200 dark:bg-gray-900 text-white shadow-lg">
@@ -21,10 +20,10 @@ function SideBar() {
         })}
       </div>
       <div
-        onClick={handleMode}
+        onClick={() => setDark(!dark)}
         className="flex items-center justify-center h-12"
       >
-        {darkTheme ? (
+        {dark ? (
           <FaSun
             size="24"
             className="text-gray-500

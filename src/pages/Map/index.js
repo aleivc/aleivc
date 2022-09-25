@@ -1,6 +1,7 @@
 import mapboxgl from "mapbox-gl";
 import { useEffect, useRef } from "react";
-import useDarkMode from "../../hooks/useDarkMode";
+import { useTheme } from "../../hooks/useDarkMode";
+
 mapboxgl.accessToken =
   process.env.REACT_APP_MAPBOX_KEY ||
   "pk.eyJ1IjoiYWxlaXZjIiwiYSI6ImNreTJjNGc2azBrZ2MydnJtbDY1bWVkZGsifQ.q71gMIIPSTNoz6VbWLUanw";
@@ -8,18 +9,22 @@ mapboxgl.accessToken =
 const Map = () => {
   const mapContainer = useRef(null);
   const map = useRef(null);
-
-  const [darkTheme, setDarkTheme] = useDarkMode();
+  const { dark } = useTheme();
 
   useEffect(() => {
-    if (map.current) return; // initialize map only once
+    const style = `mapbox://styles/mapbox/${dark ? "dark" : "light"}-v10`;
+    if (map.current) {
+      map.current.setStyle(style);
+      return; // initialize map only once
+    }
+
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: `mapbox://styles/mapbox/${darkTheme ? "dark" : "light"}-v10`,
+      style,
       center: [-70.9, 42.35],
       zoom: 9,
     });
-  }, [darkTheme]);
+  }, [dark]);
 
   return (
     <div className="flex">

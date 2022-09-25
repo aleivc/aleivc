@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+export const ThemeContext = createContext(null);
 
 const useLocalStorage = (key, initialValue) => {
   const [storedValue, setStoredValue] = useState(() => {
@@ -27,7 +28,7 @@ const useLocalStorage = (key, initialValue) => {
   return [storedValue, setValue];
 };
 
-const useDarkMode = () => {
+export const useDarkMode = () => {
   const [enabled, setEnabled] = useLocalStorage("dark-theme");
   const isEnabled = typeof enabledState === "undefined" && enabled;
 
@@ -40,4 +41,10 @@ const useDarkMode = () => {
   return [enabled, setEnabled];
 };
 
-export default useDarkMode;
+export const useTheme = () => {
+  const { dark, setDark } = useContext(ThemeContext);
+
+  return { dark, setDark };
+};
+
+export default useTheme;
