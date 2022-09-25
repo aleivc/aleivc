@@ -8,7 +8,7 @@ function SideBar() {
   const { dark, setDark } = useTheme();
 
   return (
-    <div className="fixed top-0 left-0 w-16 h-screen py-3 flex flex-col justify-between bg-gray-200 dark:bg-gray-900 text-white shadow-lg">
+    <div className="fixed top-0 left-0 w-16 h-screen py-3 flex flex-col justify-between bg-gray-400 dark:bg-gray-900 text-white shadow-lg">
       <div>
         {routes.map((item) => {
           return (
@@ -56,7 +56,7 @@ const SideBarIcon = ({ icon, tooltip = "tooltip 💡 " }) => {
         rounded-3xl hover:rounded-xl
         transition-all duration-300 ease-linear
         cursor-pointer
-        shadow-lg group"
+        shadow-xl group"
     >
       {icon}
       <span

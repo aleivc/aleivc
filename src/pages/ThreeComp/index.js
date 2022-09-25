@@ -27,7 +27,7 @@ const ThreeComp = () => {
           </p>
         </li>
       </ul>
-      <div className="flex-grow">
+      <div className="flex-grow bg-gray-400 dark:bg-gray-900">
         <Canvas camera={{ position: [0, 0, 2.75] }}>
           <Suspense fallback={<Html center>loading...</Html>}>
             <Shoe />
