@@ -1,12 +1,10 @@
 import SideBar from "../components/SideBar";
 
-const BasicLayout = ({ children }) => {
+export const BasicLayout = ({ children }) => {
   return (
-    <div>
+    <div className="flex">
       <SideBar />
-      <div className="ml-16 h-screen">{children}</div>
+      <div className="flex-grow">{children}</div>
     </div>
   );
 };
-
-export default BasicLayout;
