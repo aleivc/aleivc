@@ -12,7 +12,7 @@ function SideBar() {
   });
   return (
     <div className="flex">
-      <div className="w-16 h-screen py-3 flex flex-col justify-between bg-gray-400 dark:bg-gray-900 text-white shadow-lg">
+      <div className="w-16 h-screen py-3 flex flex-col justify-between bg-gray-300 dark:bg-gray-900 text-white shadow-lg">
         <div>
           {routes.map((item) => {
             return (
@@ -95,7 +95,7 @@ const SideBarIcon = ({ icon, tooltip = "tooltip 💡 ", isActive }) => {
         hover:text-white
         transition-all duration-300 ease-linear
         cursor-pointer
-        shadow-xl group 
+        group 
         `}
     >
       {icon}

@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ant-design/charts": "^1.4.2",
+    "@ant-design/maps": "^1.0.4",
+    "@ant-design/plots": "^1.2.2",
     "@react-three/drei": "^9.32.0",
     "@react-three/fiber": "^8.8.2",
     "@testing-library/jest-dom": "^5.11.4",
