@@ -1,5 +1,4 @@
 import { FaCube, FaHome, FaMapSigns, FaPoo } from "react-icons/fa";
-import { BasicLayout, MenuLayout } from "../layout/BasicLayout";
 
 import Home from "../pages/Home/index";
 import Map from "../pages/Map/index";
@@ -9,18 +8,19 @@ import Others from "../pages/Others";
 
 const routes = [
   {
-    path: "/",
+    path: "/home",
     element: <Home />,
     name: "首页",
     icon: <FaHome size="20" />,
   },
   {
     path: "/map",
+    redirect: "/map/1",
+    name: "地图",
+    icon: <FaMapSigns size="20" />,
     children: [
       {
         path: "/map/1",
-        name: "地图",
-        icon: <FaMapSigns size="20" />,
         element: <Map />,
         title: "点集合",
         desc: "点集合，点击下探",
@@ -35,12 +35,13 @@ const routes = [
   },
   {
     path: "/three",
+    redirect: "/three/1",
+    name: "3D内容",
+    icon: <FaCube size="20" />,
+    divider: true,
     children: [
       {
         path: "/three/1",
-        name: "3D内容",
-        icon: <FaCube size="20" />,
-        divider: true,
         element: <Shoe />,
         title: "鞋子",
         desc: "商品展示, 颜色，拖拽，旋转",
@@ -55,11 +56,12 @@ const routes = [
   },
   {
     path: "/others",
+    redirect: "/others/1",
+    name: "其它",
+    icon: <FaPoo size="20" />,
     children: [
       {
         path: "/others/1",
-        name: "其它",
-        icon: <FaPoo size="20" />,
         element: <Others />,
         title: "待添加",
         desc: "待添加",
