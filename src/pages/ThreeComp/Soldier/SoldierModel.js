@@ -1,12 +1,15 @@
 import { useRef } from "react";
 import { useAnimations, useGLTF } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
 
 const SoldierModel = () => {
   const group = useRef();
-  const { nodes, materials, animations } = useGLTF("/SoldierModel.glb");
+  const { nodes, materials, animations } = useGLTF("/models/Soldier.glb");
   const { actions } = useAnimations(animations, group);
 
-  console.log(actions);
+  useFrame(() => {
+    actions.Walk.play();
+  });
 
   return (
     <group ref={group} dispose={null}>
