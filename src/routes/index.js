@@ -5,6 +5,8 @@ import Map from "../pages/Map/index";
 import Shoe from "../pages/ThreeComp/Shoe";
 import Soldier from "../pages/ThreeComp/Soldier";
 import Others from "../pages/Others";
+import Robot from "../pages/ThreeComp/Robot";
+import Tank from "../pages/ThreeComp/Tank";
 
 const routes = [
   {
@@ -46,11 +48,23 @@ const routes = [
         title: "鞋子",
         desc: "商品展示, 颜色，拖拽，旋转",
       },
+      // {
+      //   path: "/three/soldier",
+      //   element: <Soldier />,
+      //   title: "士兵",
+      //   desc: "前进后退控制",
+      // },
       {
-        path: "/three/soldier",
-        element: <Soldier />,
-        title: "士兵",
-        desc: "前进后退控制",
+        path: "/three/2",
+        element: <Robot />,
+        title: "采摘机器人",
+        desc: "机械臂旋转控制",
+      },
+      {
+        path: "/three/3",
+        element: <Tank />,
+        title: "坦克示例",
+        desc: "摄像头旋转",
       },
     ],
   },

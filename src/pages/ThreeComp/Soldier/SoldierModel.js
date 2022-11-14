@@ -7,10 +7,6 @@ const SoldierModel = () => {
   const { nodes, materials, animations } = useGLTF("/models/Soldier.glb");
   const { actions } = useAnimations(animations, group);
 
-  useFrame(() => {
-    actions.Walk.play();
-  });
-
   return (
     <group ref={group} dispose={null}>
       <group name="Scene">

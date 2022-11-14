@@ -36,9 +36,10 @@ class KeyDisplay {
 
     this.updatePosition();
 
-    this.map.forEach((v, _) => {
-      document.body.append(v);
-    });
+    // todo character control
+    // this.map.forEach((v, _) => {
+    // document.body.append(v);
+    // });
   }
 
   updatePosition() {
@@ -78,42 +79,38 @@ const Soldier = () => {
   const keysPressed = {};
   const keyDisplayQueue = new KeyDisplay();
 
-  useEffect(() => {
-    document.addEventListener(
-      "keydown",
-      (e) => {
-        keyDisplayQueue.down(e.key);
-        keysPressed[e.key.toLowerCase()] = true;
-      },
-      false
-    );
-    document.addEventListener(
-      "keyup",
-      (e) => {
-        keyDisplayQueue.up(e.key);
-        keysPressed[e.key.toLowerCase()] = false;
-      },
-      false
-    );
-  }, []);
+  // useEffect(() => {
+  //   document.addEventListener(
+  //     "keydown",
+  //     (e) => {
+  //       keyDisplayQueue.down(e.key);
+  //       keysPressed[e.key.toLowerCase()] = true;
+  //     },
+  //     false
+  //   );
+  //   document.addEventListener(
+  //     "keyup",
+  //     (e) => {
+  //       keyDisplayQueue.up(e.key);
+  //       keysPressed[e.key.toLowerCase()] = false;
+  //     },
+  //     false
+  //   );
+  // }, []);
 
   return (
     <div className="h-screen bg-gray-400 dark:bg-gray-900">
-      <Canvas shadows camera={{ position: [0, 0, 2.75] }}>
-        <Suspense fallback={<Html>loading...</Html>}>
+      <Canvas camera={{ position: [0, 0, 2.75] }}>
+        <Suspense fallback={<Html center>loading...</Html>}>
           <SoldierModel />
-          <ambientLight color={0xffffff} intensity={0.7} />
-          <directionalLight
-            castShadow
-            color={0xffffff}
-            position={[-60, 100, -10]}
-          />
-          <mesh rotation-x={-Math.PI / 2}>
-            <planeGeometry args={[512, 512, 80, 80]} />
-            <meshStandardMaterial map={colorMap} />
-          </mesh>
-          <OrbitControls ref={controlsRef} enableDamping={false} />
         </Suspense>
+        <ambientLight color={0xffffff} intensity={0.7} />
+        <directionalLight color={0xffffff} position={[-60, 100, -10]} />
+        {/*<mesh rotation-x={-Math.PI / 2}>*/}
+        {/*  <planeGeometry args={[512, 512, 80, 80]} />*/}
+        {/*  <meshStandardMaterial map={colorMap} />*/}
+        {/*</mesh>*/}
+        <OrbitControls ref={controlsRef} enableDamping={false} />
       </Canvas>
     </div>
   );

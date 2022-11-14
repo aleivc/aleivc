@@ -4,17 +4,18 @@ import {
   GizmoViewcube,
   Html,
   OrbitControls,
+  PerspectiveCamera,
 } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import ShoeModel from "./ShoeModel";
+import Model from "./Model";
 
-const Shoe = () => {
+const Robot = () => {
   const controlsRef = useRef();
   return (
     <div className="h-screen bg-gray-400 dark:bg-gray-900">
-      <Canvas camera={{ position: [0, 0, 2.75] }}>
+      <Canvas>
         <Suspense fallback={<Html center>loading...</Html>}>
-          <ShoeModel />
+          <Model />
         </Suspense>
         <ambientLight intensity={0.1} />
         <pointLight color="white" intensity={1} position={[11, 10, 10]} />
@@ -33,4 +34,4 @@ const Shoe = () => {
   );
 };
 
-export default Shoe;
+export default Robot;
