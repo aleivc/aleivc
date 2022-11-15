@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { PerspectiveCamera, useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 
@@ -7,24 +7,27 @@ const Model = (props) => {
   const { nodes, materials } = useGLTF("/models/robot.glb");
   const car = useRef();
   const arm1 = useRef();
-  const arm2 = useRef();
-  const arm3 = useRef();
+
   const arm4 = useRef();
   const cameraRef = useRef();
   const targetPosition = new THREE.Vector3();
   let currentPosition = new THREE.Vector3();
+  const vec = new THREE.Vector3();
 
   useFrame((state, delta, frame) => {
-    console.log(state);
     // car.current.position.z += 0.01;
     arm1.current.rotation.y += 0.01;
     arm4.current.rotation.z += 0.01;
-    const pos = arm4.current.getWorldPosition(targetPosition);
-    state.camera.lookAt(pos);
-    state.camera.updateProjectionMatrix();
-    // cameraRef.current.lookAt(pos);
-    // cameraRef.current.updateProjectionMatrix();
-    // cameraRef.current.position.copy(currentPosition);
+    if (props.mode) {
+      const pos = arm4.current.getWorldPosition(targetPosition);
+      state.camera.lookAt(pos);
+      state.camera.position.copy(currentPosition);
+      state.camera.updateProjectionMatrix();
+    } else {
+      // state.camera.lookAt([0, 0, 0]);
+      state.camera.position.lerp(vec.set(10, 10, 10), 0.1);
+      // state.camera.updateProjectionMatrix();
+    }
   });
 
   return (
