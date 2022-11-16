@@ -4,14 +4,13 @@ import {
   GizmoViewcube,
   Html,
   OrbitControls,
-  PerspectiveCamera,
 } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import Model from "./Model";
 
 const Robot = () => {
   const controlsRef = useRef();
-  const [mode, setMode] = useState(true);
+  const [mode, setMode] = useState(false);
   return (
     <div
       style={{ position: "relative" }}
@@ -43,6 +42,7 @@ const Robot = () => {
         >
           <GizmoViewcube faces={["右", "左", "上", "下", "前", "后"]} />
         </GizmoHelper>
+        <gridHelper />
         <OrbitControls ref={controlsRef} enableDamping={false} />
       </Canvas>
     </div>
