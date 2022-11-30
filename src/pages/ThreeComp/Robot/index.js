@@ -20,7 +20,6 @@ const Robot = () => {
         <button
           className="text-white outline"
           onClick={() => {
-            console.log("some");
             setMode(!mode);
           }}
         >
@@ -42,7 +41,7 @@ const Robot = () => {
         >
           <GizmoViewcube faces={["右", "左", "上", "下", "前", "后"]} />
         </GizmoHelper>
-        <gridHelper />
+        {/*<gridHelper />*/}
         <OrbitControls ref={controlsRef} enableDamping={false} />
       </Canvas>
     </div>

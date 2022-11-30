@@ -3,7 +3,6 @@ import { FaCube, FaHome, FaMapSigns, FaPoo } from "react-icons/fa";
 import Home from "../pages/Home/index";
 import Map from "../pages/Map/index";
 import Shoe from "../pages/ThreeComp/Shoe";
-import Soldier from "../pages/ThreeComp/Soldier";
 import Others from "../pages/Others";
 import Robot from "../pages/ThreeComp/Robot";
 import Tank from "../pages/ThreeComp/Tank";

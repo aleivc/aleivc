@@ -7,9 +7,11 @@ import { useTheme } from "../../hooks/useDarkMode";
 function SideBar() {
   const { dark, setDark } = useTheme();
   const { pathname } = useLocation();
+
   const list = routes.find((item) => {
     return item.children && pathname.includes(item.path);
   });
+
   return (
     <div className="flex">
       <div className="w-16 h-screen py-3 flex flex-col justify-between bg-gray-300 dark:bg-gray-900 text-white shadow-lg">
@@ -50,7 +52,7 @@ function SideBar() {
           )}
         </div>
       </div>
-      {pathname === "/home" ? null : (
+      {pathname === "/home" || pathname.includes("/others") ? null : (
         <ul className="w-64 h-screen pt-4 space-y-2 bg-gray-200 dark:bg-gray-800">
           {list &&
             list.children.map((item) => {

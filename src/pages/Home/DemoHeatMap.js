@@ -72,6 +72,7 @@ const DemoHeatmap = () => {
       return group;
     },
   });
+
   const config = {
     data,
     autoFit: true,
