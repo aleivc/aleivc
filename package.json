@@ -13,9 +13,12 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "antd": "^5.0.2",
+    "antd-colorpicker": "^1.0.0",
     "autoprefixer": "^10.4.12",
+    "fabric": "^5.2.4",
     "ityped": "^1.0.3",
     "mapbox-gl": "^2.10.0",
+    "mqtt": "^4.3.7",
     "postcss": "^8.4.16",
     "prettier": "^2.7.1",
     "react": "^18.2.0",
@@ -25,7 +28,8 @@
     "react-scripts": "^5.0.1",
     "tailwindcss": "^3.1.8",
     "three": "^0.144.0",
-    "web-vitals": "^3.0.2"
+    "web-vitals": "^3.0.2",
+    "webpack": "^5.75.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -50,5 +54,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "webpack-cli": "^5.0.0"
   }
 }

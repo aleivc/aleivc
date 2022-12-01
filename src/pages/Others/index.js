@@ -7,7 +7,8 @@ import {
   Descriptions,
   Button,
 } from "antd";
-import { useState } from "react";
+import * as mqtt from "mqtt/dist/mqtt";
+import { useEffect, useState } from "react";
 
 const dataSource = [
   {
@@ -86,6 +87,17 @@ const columns = [
   },
 ];
 const Others = () => {
+  const [connectionStatus, setConnectionStatus] = useState(false);
+  const [messages, setMessages] = useState([]);
+
+  useEffect(() => {
+    const client = mqtt.connect("broker.emqx.io:8083/mqtt");
+    client.on("connect", () => setConnectionStatus(true));
+    client.on("message", (topic, payload, packet) => {
+      setMessages(messages.concat(payload.toString()));
+    });
+  }, []);
+
   return (
     <div className="h-screen">
       <Table

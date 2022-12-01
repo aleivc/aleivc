@@ -6,6 +6,7 @@ import Shoe from "../pages/ThreeComp/Shoe";
 import Others from "../pages/Others";
 import Robot from "../pages/ThreeComp/Robot";
 import Tank from "../pages/ThreeComp/Tank";
+import CanvasDrawing from "../pages/Map/CanvasDrawing";
 
 const routes = [
   {
@@ -31,6 +32,12 @@ const routes = [
         element: <div>map/2</div>,
         title: "路线",
         desc: "包裹，快递追踪",
+      },
+      {
+        path: "/map/3",
+        element: <CanvasDrawing />,
+        title: "地图，图片标注",
+        desc: "绘制流动线条",
       },
     ],
   },
