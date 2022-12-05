@@ -11,6 +11,7 @@ const CanvasDrawing = () => {
 
   let isDown = false;
   let line;
+  let strokeWidth = 2;
 
   const startP = [];
   const endP = [];
@@ -30,7 +31,7 @@ const CanvasDrawing = () => {
       startP.push({ x: pointer.x, y: pointer.y });
 
       line = new fabric.Line(points, {
-        strokeWidth: 5,
+        strokeWidth: strokeWidth,
         fill: "red",
         stroke: "red",
       });
@@ -52,11 +53,11 @@ const CanvasDrawing = () => {
       endP.push({ x: pointer.x, y: pointer.y });
 
       let circle = new fabric.Circle({
-        radius: 5,
+        radius: strokeWidth,
         stroke: "green",
-        strokeWidth: 5,
-        left: startP[startP.length - 1].x - 5,
-        top: startP[startP.length - 1].y - 5,
+        strokeWidth: strokeWidth,
+        left: startP[startP.length - 1].x - strokeWidth,
+        top: startP[startP.length - 1].y - strokeWidth,
         selectable: false,
       });
 
@@ -64,7 +65,7 @@ const CanvasDrawing = () => {
 
       function animateP() {
         circle.animate(
-          { left: pointer.x - 5, top: pointer.y - 5 },
+          { left: pointer.x - strokeWidth, top: pointer.y - strokeWidth },
           {
             duration: 1000,
             onChange: function () {
@@ -73,8 +74,8 @@ const CanvasDrawing = () => {
             onComplete: function () {
               even = !even;
               circle.set({
-                left: startP[len].x - 5,
-                top: startP[len].y - 5,
+                left: startP[len].x - strokeWidth,
+                top: startP[len].y - strokeWidth,
               });
               fabricRef.current.renderAll();
               animate();
