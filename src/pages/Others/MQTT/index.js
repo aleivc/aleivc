@@ -2,6 +2,7 @@ import { Button, Col, Form, Input, Row, Tabs } from "antd";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import mqtt from "mqtt/dist/mqtt";
+import Tools from "./Tools";
 const { TextArea } = Input;
 const options = {
   keepalive: 30,
@@ -26,6 +27,7 @@ const MQTTPage = () => {
     isSubed: false,
     messages: [],
   });
+  const [persent, setPersent] = useState(0);
 
   const [form, setForm] = useState({
     host: "58.34.98.117",
@@ -34,7 +36,8 @@ const MQTTPage = () => {
     password: "123456",
     id: "JSLF002-20221129001",
     publish: "/valave/JSLF002-20221129001/properties/report",
-    subscribe: "/valve/JSLF002-20221129001/function/invoke",
+    // subscribe: "/valve/JSLF002-20221129001/function/invoke",
+    subscribe: "/valave/JSLF002-20221129001/properties/report",
     payload: JSON.stringify(
       {
         deviceId: "JSFL002-20221111002",
@@ -72,6 +75,7 @@ const MQTTPage = () => {
 
       connect.client.on("message", (topic, message) => {
         console.log(topic, message.toString());
+        setPersent(persent => persent + 1)
         if (topic) {
           setForm({
             ...form,
@@ -123,7 +127,7 @@ const MQTTPage = () => {
   return (
     <div className="p-3">
       <Tabs defaultActiveKey="1">
-        <Tabs.TabPane tab="连接" key="1">
+        <Tabs.TabPane tab="设置" key="1">
           <Form
             layout="vertical"
             name="basic"
@@ -222,7 +226,9 @@ const MQTTPage = () => {
             </Row>
           </Form>
         </Tabs.TabPane>
-        <Tabs.TabPane tab="可视化" key="2"></Tabs.TabPane>
+        <Tabs.TabPane tab="设备" key="2">
+          <Tools persent={persent} />
+        </Tabs.TabPane>
       </Tabs>
     </div>
   );
