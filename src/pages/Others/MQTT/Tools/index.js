@@ -1,274 +1,137 @@
-import {Button, Card, Col, Form, Input, Progress, Row, Table, Tag} from "antd";
-import {useEffect, useState} from "react";
-const dataSource = [
-    {
-        key: '1',
-        name: '胡彦斌',
-        age: 32,
-        address: '西湖区湖底公园1号',
-    },
-    {
-        key: '2',
-        name: '胡彦祖',
-        age: 42,
-        address: '西湖区湖底公园1号',
-    },
-];
+import {
+    Badge,
+    Button,
+    Card,
+    Input,
+    Progress,
+    Tag, Typography,
+} from "antd";
+import {useState} from "react";
+import Meta from "antd/es/card/Meta";
 
-const columns = [
-    {
-        title: '姓名',
-        dataIndex: 'name',
-        key: 'name',
-    },
-    {
-        title: '年龄',
-        dataIndex: 'age',
-        key: 'age',
-    },
-    {
-        title: '住址',
-        dataIndex: 'address',
-        key: 'address',
-    },
-];
-const Tools = ({persent}) => {
-    const [form, setForm] = useState({
-        host: "58.34.98.117",
-        port: 8083,
-        username: "ui_client",
-        password: "123456",
-        id: "JSLF002-20221129001",
-        publish: "/valave/JSLF002-20221129001/properties/report",
-        subscribe: "/valve/JSLF002-20221129001/function/invoke",
-        payload: JSON.stringify(
-            {
-                deviceId: "JSFL002-20221111002",
-                properties: { all_open: 0 },
-            },
-            null,
-            4
-        ),
-        receive: "",
-    });
+const {Text} = Typography;
 
-    const onRecordChange = () => {
-        console.log("record change");
-    };
+
+const tags_map = {
+    all_open: 1,
+    all_close: 0,
+    value_trouble: 0,
+    control_mode: 0,
+    op_open: 1,
+    op_close: 0,
+    op_pos: 0,
+    op_get: 0
+}
+
+const record = {
+    id: "JSFL002-20221111002",
+    tags: {...tags_map},
+    percent: 0
+}
+
+const Tools = ({}) => {
+    const [value, setValue] = useState('');
+
+    const [list, setList] = useState([
+        {
+            ...record
+        }
+    ])
 
     const handleAdd = () => {
-        console.log('Add')
+        setList([
+            ...list,
+            {
+                ...record,
+                id: value
+            }
+        ])
     }
 
-    return <div className="flex flex-wrap gap-3">
-        <Card>
-            <Form
-                name="basic"
-                initialValues={form}
-                onValuesChange={onRecordChange}
-            >
-                <Row>
-                    <Col>
-                        <Form.Item label="阀号" name="host">
-                            <Input />
-                        </Form.Item>
-                    </Col>
-                    <Col>
-                        <Form.Item label=" " name="password">
-                            <Button onClick={handleAdd}>连接</Button>
-                        </Form.Item>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <Tag color="green">开到位</Tag>
-                        <Tag color="green">关到位</Tag>
-                        <Tag color="green">故障</Tag>
-                        <Tag color="green">控制模式</Tag>
-                        <Tag color="green">开阀</Tag>
-                        <Tag color="green">关阀</Tag>
-                        <Tag color="green">设定开度</Tag>
-                        <Tag color="green">查询</Tag>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col style={{textAlign: 'center'}}>
-                        <Form.Item label=" " name="password">
-                            <Progress percent={persent} />
-                            <div>当前阀位 24% / 目标阀位 50%</div>
-                        </Form.Item>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <Form.Item label=" " name="password">
-                            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                <Button onClick={handleAdd}>开阀</Button>
-                                <Button onClick={handleAdd}>关阀</Button>
-                                <Button onClick={handleAdd}>停止</Button>
-                            </div>
-                        </Form.Item>
-                    </Col>
-                </Row>
-            </Form>
-        </Card>
-        <Card>
-            <Form
-                layout="vertical"
-                name="basic"
-                initialValues={form}
-                onValuesChange={onRecordChange}
-            >
-                <Row gutter={20}>
-                    <Col>
-                        <Form.Item label="阀号" name="host">
-                            <Input />
-                        </Form.Item>
-                    </Col>
-                    <Col>
-                        <Form.Item label=" " name="password">
-                            <Button onClick={handleAdd}>连接</Button>
-                        </Form.Item>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span={12}>
-                        <Tag color="green">开到位</Tag>
-                        <Tag color="green">关到位</Tag>
-                        <Tag color="green">故障</Tag>
-                        <Tag color="green">控制模式</Tag>
-                        <Tag color="green">开阀</Tag>
-                        <Tag color="green">关阀</Tag>
-                        <Tag color="green">设定开度</Tag>
-                        <Tag color="green">查询</Tag>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span={6} style={{textAlign: 'center'}}>
-                        <Form.Item label=" " name="password">
-                            <Progress percent={persent} />
-                            <div>当前阀位 24% / 目标阀位 50%</div>
-                        </Form.Item>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span={6}>
-                        <Form.Item label=" " name="password">
-                            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                <Button onClick={handleAdd}>开阀</Button>
-                                <Button onClick={handleAdd}>关阀</Button>
-                                <Button onClick={handleAdd}>停止</Button>
-                            </div>
-                        </Form.Item>
-                    </Col>
-                </Row>
-            </Form>
-        </Card>
-        <Card>
-            <Form
-                layout="vertical"
-                name="basic"
-                initialValues={form}
-                onValuesChange={onRecordChange}
-            >
-                <Row gutter={20}>
-                    <Col>
-                        <Form.Item label="阀号" name="host">
-                            <Input />
-                        </Form.Item>
-                    </Col>
-                    <Col>
-                        <Form.Item label=" " name="password">
-                            <Button onClick={handleAdd}>连接</Button>
-                        </Form.Item>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span={12}>
-                        <Tag color="green">开到位</Tag>
-                        <Tag color="green">关到位</Tag>
-                        <Tag color="green">故障</Tag>
-                        <Tag color="green">控制模式</Tag>
-                        <Tag color="green">开阀</Tag>
-                        <Tag color="green">关阀</Tag>
-                        <Tag color="green">设定开度</Tag>
-                        <Tag color="green">查询</Tag>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span={6} style={{textAlign: 'center'}}>
-                        <Form.Item label=" " name="password">
-                            <Progress percent={persent} />
-                            <div>当前阀位 24% / 目标阀位 50%</div>
-                        </Form.Item>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span={6}>
-                        <Form.Item label=" " name="password">
-                            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                <Button onClick={handleAdd}>开阀</Button>
-                                <Button onClick={handleAdd}>关阀</Button>
-                                <Button onClick={handleAdd}>停止</Button>
-                            </div>
-                        </Form.Item>
-                    </Col>
-                </Row>
-            </Form>
-        </Card>
-        <Card>
-            <Form
-                layout="vertical"
-                name="basic"
-                initialValues={form}
-                onValuesChange={onRecordChange}
-            >
-                <Row gutter={20}>
-                    <Col>
-                        <Form.Item label="阀号" name="host">
-                            <Input />
-                        </Form.Item>
-                    </Col>
-                    <Col>
-                        <Form.Item label=" " name="password">
-                            <Button onClick={handleAdd}>连接</Button>
-                        </Form.Item>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span={12}>
-                        <Tag color="green">开到位</Tag>
-                        <Tag color="green">关到位</Tag>
-                        <Tag color="green">故障</Tag>
-                        <Tag color="green">控制模式</Tag>
-                        <Tag color="green">开阀</Tag>
-                        <Tag color="green">关阀</Tag>
-                        <Tag color="green">设定开度</Tag>
-                        <Tag color="green">查询</Tag>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span={6} style={{textAlign: 'center'}}>
-                        <Form.Item label=" " name="password">
-                            <Progress percent={persent} />
-                            <div>当前阀位 24% / 目标阀位 50%</div>
-                        </Form.Item>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span={6}>
-                        <Form.Item label=" " name="password">
-                            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                <Button onClick={handleAdd}>开阀</Button>
-                                <Button onClick={handleAdd}>关阀</Button>
-                                <Button onClick={handleAdd}>停止</Button>
-                            </div>
-                        </Form.Item>
-                    </Col>
-                </Row>
-            </Form>
-        </Card>
+    const onChange = (e) => {
+        setValue(e.target.value);
+    }
 
+    const handleAction = (action, item) => {
+        switch (action) {
+            case 'open':
+                // 根据id 找到那个，更新 percent
+                setList([
+                    ...list.map(f => {
+                        return f.id === item.id ? {...item, percent: item.percent += 1} : {...f};
+                    })
+                ])
+                break;
+            case 'close':
+                setList([
+                    ...list.map(f => {
+                        return f.id === item.id ? {...item, percent: item.percent -= 1} : {...f};
+                    })
+                ])
+                break;
+            case 'stop':
+                break;
+            case 'delete':
+                setList([
+                    ...list.filter(f => f.id !== item.id)
+                ])
+                break;
+            default:
+                break;
+        }
+    }
+
+    return <div className="">
+        <div className="flex gap-1" style={{width: 320}}>
+            <Input placeholder="序列号" value={value} onChange={onChange}/>
+            <Button onClick={handleAdd}>添加设备</Button>
+        </div>
+        <br/>
+        <div className="flex flex-wrap items-center gap-2">
+            {
+                list.map((item, index) => {
+                    return (
+                        <Badge.Ribbon text={list.length - index} placement="start" key={index}>
+                            <Card
+                                style={{
+                                    width: 320,
+                                }}
+                                actions={[
+                                    <div onClick={() => handleAction('open', item)}><Text>开阀</Text></div>,
+                                    <div onClick={() => handleAction('close', item)}><Text>关阀</Text></div>,
+                                    <div onClick={() => handleAction('stop', item)}><Text>停止</Text></div>,
+                                    <div onClick={() => handleAction('delete', item)}><Text type="danger">删除</Text>
+                                    </div>,
+                                ]}
+                            >
+                                <Meta
+                                    description={<div><Badge status="processing"/> {item.id}</div>}
+                                />
+                                <br/>
+
+                                <Progress percent={item.percent} size="small"/>
+                                <div className="text-center">当前阀位 {item.percent}% / 目标阀位 50%</div>
+                                <br/>
+                                <div className="flex flex-wrap gap-1">
+                                    <Tag color={item.tags['all_open'] === 0 ? 'green' : ''}>开到位</Tag>
+                                    <Tag color={item.tags['all_close'] === 0 ? 'green' : ''}>关到位</Tag>
+                                    <Tag color={item.tags['value_trouble'] === 0 ? 'warning' : ''}>故障</Tag>
+                                    <Tag
+                                        color={item.tags['control_mode'] === 0 ? 'green' : ''}>{item.tags['control_mode'] === 0 ? '就地' : '远程'}</Tag>
+                                    <Tag color={item.tags['op_open'] === 0 ? 'green' : ''}>开阀</Tag>
+                                    <Tag color={item.tags['op_close'] === 0 ? 'green' : ''}>关阀</Tag>
+                                </div>
+                                {/*<Divider/>*/}
+                                <div>
+                                    {/*<div>some</div>*/}
+                                </div>
+                            </Card>
+                        </Badge.Ribbon>
+                    )
+                })
+            }
+
+        </div>
     </div>
 }
 
