@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import mqtt from "mqtt/dist/mqtt";
 import Tools from "./Tools";
 const { TextArea } = Input;
+
 const options = {
   keepalive: 30,
   protocolId: "MQTT",
@@ -227,7 +228,7 @@ const MQTTPage = () => {
           </Form>
         </Tabs.TabPane>
         <Tabs.TabPane tab="设备" key="2">
-          <Tools persent={persent} />
+          <Tools persent={80} />
         </Tabs.TabPane>
       </Tabs>
     </div>
