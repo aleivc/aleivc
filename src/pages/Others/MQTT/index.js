@@ -94,7 +94,8 @@ const MQTTPage = () => {
   const handleConnect = () => {
     const { host, port, username, password } = form;
     // test for wss
-    const url = `wss://${host}:${port}/mqtt`;
+    // test for wss version 3.0
+    const url = `ws://${host}:${port}/mqtt`;
 
     options.username = username;
     options.password = password;
