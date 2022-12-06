@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { StyleProvider } from '@ant-design/cssinjs';
 
 import "./index.css";
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -45,10 +46,12 @@ function GenRoutes() {
 
 root.render(
   <React.StrictMode>
-    <App>
-      <BrowserRouter>
-        <GenRoutes />
-      </BrowserRouter>
-    </App>
+      <StyleProvider hashPriority="high">
+          <App>
+              <BrowserRouter>
+                  <GenRoutes/>
+              </BrowserRouter>
+          </App>
+      </StyleProvider>
   </React.StrictMode>
 );
