@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@ant-design/charts": "^1.4.2",
+    "@ant-design/cssinjs": "^1.1.0",
     "@ant-design/icons": "^4.8.0",
     "@ant-design/maps": "^1.0.4",
     "@ant-design/plots": "^1.2.2",
