@@ -1,138 +1,292 @@
 import {
-    Badge,
-    Button,
-    Card,
-    Input,
-    Progress,
-    Tag, Typography,
+    Badge, Button, Card, Input, message, Progress, Skeleton, Spin, Tag, Typography,
 } from "antd";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Meta from "antd/es/card/Meta";
+import mqtt from "mqtt/dist/mqtt";
+import {LoadingOutlined} from "@ant-design/icons";
+import {list} from "postcss";
 
-const {Text} = Typography;
-
+const {Text, Paragraph} = Typography;
 
 const tags_map = {
+    all_close: 1,
     all_open: 1,
-    all_close: 0,
-    value_trouble: 0,
-    control_mode: 0,
+    control_mode: 2,
+    op_close: 1,
+    op_get: 1,
     op_open: 1,
-    op_close: 0,
-    op_pos: 0,
-    op_get: 0
+    op_pos: 1,
+    value_trouble: 1,
+    cur_pos: 0
 }
 
+const deviceId = 'JSLF002-20221129002';
+
 const record = {
-    id: "JSFL002-20221111002",
-    tags: {...tags_map},
+    deviceId,
+    properties: {...tags_map},
     percent: 0
 }
 
+const options = {
+    keepalive: 30,
+    protocolId: "MQTT",
+    protocolVersion: 4,
+    clean: true,
+    reconnectPeriod: 1000,
+    connectTimeout: 30 * 1000,
+    will: {
+        topic: "WillMsg", payload: "Connection Closed abnormally..!", qos: 0, retain: false,
+    },
+    rejectUnauthorized: false,
+};
+
+const conf = {
+    host: "58.34.98.117",
+    port: 8083,
+    username: "ui_client",
+    password: "123456",
+}
+
+const loadingConf = {
+    open: false,
+    close: false,
+    stop: false,
+    delete: false,
+    info: true,
+}
+
+const antIcon = (
+    <LoadingOutlined
+        style={{
+            fontSize: 16,
+        }}
+        spin
+    />
+);
+
 const Tools = ({}) => {
+    // 连接
+    const [connect, setConnect] = useState({
+        client: null,
+    })
+    // 序列号输入框
     const [value, setValue] = useState('');
 
-    const [list, setList] = useState([
-        {
-            ...record
+    // 设备列表
+    const [list, setList] = useState([])
+
+    // loading
+    const [loading, setLoading] = useState(loadingConf);
+
+    useEffect(() => {
+        const {host, port, username, password} = conf;
+
+        const url = `ws://${host}:${port}/mqtt`;
+
+        options.username = username;
+        options.password = password;
+        setConnect({
+            client: mqtt.connect(url, options)
+        });
+
+        return () => {
+            if (connect.client) {
+                connect.client.end();
+                message.success('mqtt closed')
+            }
         }
-    ])
+    }, [])
+
+    useEffect(() => {
+        if (connect.client) {
+            connect.client.on("connect", () => {
+                message.success('connected');
+                setConnect({
+                    ...connect, connectStatus: "connected",
+                });
+            });
+
+            connect.client.on("error", () => {
+                message.error('error');
+                setConnect({
+                    ...connect, connectStatus: "error",
+                });
+                connect.client.end();
+            });
+
+            connect.client.on("reconnect", () => {
+                message.warning('Reconnecting');
+                setConnect({
+                    ...connect, connectStatus: "Reconnecting",
+                });
+            });
+
+            connect.client.on("message", (deviceId, data) => {
+                const message = JSON.parse(data.toString());
+                const temp = list.map(f => {
+                    // return f.deviceId === message.deviceId ? {...message, properties: {...message.properties, cur_pos: 50}} : {...f};
+                    return f.deviceId === message.deviceId ? {...message, loading: false, initLoading: false, action: ''} : {...f};
+                })
+                // 设置对应的 record
+                setList([...temp])
+
+                // setLoading({...loadingConf, info: false})
+            });
+        }
+    }, [connect, list])
 
     const handleAdd = () => {
-        setList([
-            ...list,
-            {
-                ...record,
-                id: value
-            }
-        ])
+        const flag = list.filter(f => f.deviceId === value);
+        if (flag.length > 0) {
+            message.error('设备已存在')
+            return;
+        }
+        // 订阅此设备 组装topic
+        const subUrl = `/valve/${value}/properties/report`;
+        const pubUrl = `/valve/${value}/function/invoke`;
+        connect.client.subscribe(subUrl, {qos: 0}, (err) => {
+            if (err) return;
+            // 更新 list
+            setList([...list, {
+                ...record, deviceId: value, loading: true, initLoading: true
+            }].reverse())
+            connect.client.publish(
+                pubUrl,
+                '{"deviceId":"' + value + '","inputs":{"name":"op_get","value":"1"}',
+                (err) => {
+                    if (err) return;
+                })
+        })
     }
 
+    // 序列号变更
     const onChange = (e) => {
         setValue(e.target.value);
     }
 
-    const handleAction = (action, item) => {
+    const handleAction = (action, item, index) => {
+        const subUrl = `/valve/${item.deviceId}/properties/report`;
+        const pubUrl = `/valve/${item.deviceId}/function/invoke`;
+        const temp = list.map(f => {
+            // return f.deviceId === message.deviceId ? {...message, properties: {...message.properties, cur_pos: 50}} : {...f};
+            return f.deviceId === item.deviceId ? {...item, loading: true,  action} : {...f};
+        })
+        // 设置对应的 record
+        setList([...temp])
+
         switch (action) {
             case 'open':
-                // 根据id 找到那个，更新 percent
-                setList([
-                    ...list.map(f => {
-                        return f.id === item.id ? {...item, percent: item.percent += 1} : {...f};
+                // 发送消息
+                connect.client.publish(
+                    pubUrl,
+                    '{"deviceId":"' + item.deviceId + '","inputs":{"name":"op_get","value":"1"}',
+                    (err) => {
+                        if (err) return;
                     })
-                ])
+
                 break;
             case 'close':
-                setList([
-                    ...list.map(f => {
-                        return f.id === item.id ? {...item, percent: item.percent -= 1} : {...f};
+                // 发送消息
+                connect.client.publish(
+                    pubUrl,
+                    '{"deviceId":"' + item.deviceId + '","inputs":{"name":"op_get","value":"1"}',
+                    (err) => {
+                        if (err) return;
+                        // setList([
+                        //     ...list.map(f => {
+                        //         return f.deviceId === item.deviceId ? {...item, percent: item.percent -= 1} : {...f};
+                        //     })
+                        // ])
                     })
-                ])
                 break;
             case 'stop':
+                // 发送消息
+                connect.client.publish(
+                    pubUrl,
+                    '{"deviceId":"' + item.deviceId + '","inputs":{"name":"op_get","value":"1"}',
+                    (err) => {
+                        if (err) return;
+                        // setList([
+                        //     ...list.map(f => {
+                        //         return f.deviceId === item.deviceId ? {...item, percent: item.percent -= 1} : {...f};
+                        //     })
+                        // ])
+                    })
                 break;
             case 'delete':
-                setList([
-                    ...list.filter(f => f.id !== item.id)
-                ])
+                // 取消订阅设备，根据id 拼装 topic
+                connect.client.unsubscribe(subUrl, {}, (err) => {
+                    if (err) return;
+
+                    // 更新列表
+                    setList([...list.filter(f => f.deviceId !== item.deviceId)])
+                })
                 break;
             default:
                 break;
         }
     }
 
-    return <div className="">
+    return (<div>
+        <br/>
         <div className="flex gap-1" style={{width: 320}}>
             <Input placeholder="序列号" value={value} onChange={onChange}/>
             <Button onClick={handleAdd}>添加设备</Button>
         </div>
         <br/>
-        <div className="flex flex-wrap items-center gap-2">
-            {
-                list.map((item, index) => {
-                    return (
-                        <Badge.Ribbon text={list.length - index} placement="start" key={index}>
-                            <Card
-                                style={{
-                                    width: 320,
-                                }}
-                                actions={[
-                                    <div onClick={() => handleAction('open', item)}><Text>开阀</Text></div>,
-                                    <div onClick={() => handleAction('close', item)}><Text>关阀</Text></div>,
-                                    <div onClick={() => handleAction('stop', item)}><Text>停止</Text></div>,
-                                    <div onClick={() => handleAction('delete', item)}><Text type="danger">删除</Text>
-                                    </div>,
-                                ]}
-                            >
-                                <Meta
-                                    description={<div><Badge status="processing"/> {item.id}</div>}
-                                />
-                                <br/>
+        <div className="flex flex-wrap gap-2">
+            {list.map((item, index) => {
+                return (<Badge.Ribbon text={list.length - index} placement="start" key={index}>
+                    <Card
+                        style={{
+                            width: 320,
+                        }}
+                        actions={[<div className="flex justify-center items-center"
+                                       onClick={() => handleAction('open', item, index)}>
+                            <Spin spinning={item.loading && item.action === 'open'}><Text>开阀</Text></Spin></div>,
+                            <div onClick={() => handleAction('close', item, index)}>
+                                <Spin spinning={item.loading && item.action === 'close'}><Text>关阀</Text></Spin>
+                            </div>,
+                            <div onClick={() => handleAction('stop', item, index)}>
+                                <Text>停止</Text>
+                            </div>,
+                            <div onClick={() => handleAction('delete', item, index)}>
+                                <Text
+                                    type="danger">删除</Text>
+                            </div>,]}
+                    >
+                        <Meta
+                            description={<div className="flex"><Badge status="processing"/>
+                                <Paragraph
+                                    copyable
+                                >
+                                    {item.deviceId}
+                                </Paragraph>
+                            </div>}
+                        />
+                        <br/>
 
-                                <Progress percent={item.percent} size="small"/>
-                                <div className="text-center">当前阀位 {item.percent}% / 目标阀位 50%</div>
-                                <br/>
-                                <div className="flex flex-wrap gap-1">
-                                    <Tag color={item.tags['all_open'] === 0 ? 'green' : ''}>开到位</Tag>
-                                    <Tag color={item.tags['all_close'] === 0 ? 'green' : ''}>关到位</Tag>
-                                    <Tag color={item.tags['value_trouble'] === 0 ? 'warning' : ''}>故障</Tag>
-                                    <Tag
-                                        color={item.tags['control_mode'] === 0 ? 'green' : ''}>{item.tags['control_mode'] === 0 ? '就地' : '远程'}</Tag>
-                                    <Tag color={item.tags['op_open'] === 0 ? 'green' : ''}>开阀</Tag>
-                                    <Tag color={item.tags['op_close'] === 0 ? 'green' : ''}>关阀</Tag>
-                                </div>
-                                {/*<Divider/>*/}
-                                <div>
-                                    {/*<div>some</div>*/}
-                                </div>
-                            </Card>
-                        </Badge.Ribbon>
-                    )
-                })
-            }
-
+                        <Spin spinning={item.initLoading}>
+                            <Progress percent={item.properties['cur_pos']} size="small"/>
+                            <div className="text-center">当前阀位 {item.properties['cur_pos']}% / 目标阀位 - %</div>
+                            <br/>
+                            <div className="flex flex-wrap gap-1">
+                                <Tag color={item.properties['all_close'] === 0 ? 'green' : ''}>关到位</Tag>
+                                <Tag color={item.properties['all_open'] === 0 ? 'green' : ''}>开到位</Tag>
+                                <Tag
+                                    color={item.properties['control_mode'] === 2 ? '' : 'green'}>{item.properties['control_mode'] === 0 ? '就地' : '远程'}</Tag>
+                                <Tag color={item.properties['op_close'] === 0 ? 'green' : ''}>关阀</Tag>
+                                <Tag color={item.properties['value_trouble'] === 0 ? 'warning' : ''}>故障</Tag>
+                                <Tag color={item.properties['op_open'] === 0 ? 'green' : ''}>开阀</Tag>
+                            </div>
+                        </Spin>
+                    </Card>
+                </Badge.Ribbon>)
+            })}
         </div>
-    </div>
+    </div>)
 }
 
 export default Tools;
