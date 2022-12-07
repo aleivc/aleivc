@@ -16,6 +16,7 @@
     "antd": "^5.0.2",
     "antd-colorpicker": "^1.0.0",
     "autoprefixer": "^10.4.12",
+    "dotenv": "^16.0.3",
     "fabric": "^5.2.4",
     "ityped": "^1.0.3",
     "mapbox-gl": "^2.10.0",
