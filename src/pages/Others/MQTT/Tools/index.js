@@ -238,7 +238,7 @@ const Tools = ({}) => {
         <br/>
         <div className="flex flex-wrap gap-2">
             {list.map((item, index) => {
-                return (<Badge.Ribbon text={list.length - index} placement="start" key={index}>
+                return (<Badge.Ribbon text={index + 1} placement="start" key={index}>
                     <Card
                         style={{
                             width: 320,
