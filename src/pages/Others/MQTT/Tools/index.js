@@ -5,7 +5,6 @@ import {useEffect, useState} from "react";
 import Meta from "antd/es/card/Meta";
 import mqtt from "mqtt/dist/mqtt";
 import {LoadingOutlined} from "@ant-design/icons";
-import {list} from "postcss";
 
 const {Text, Paragraph} = Typography;
 

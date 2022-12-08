@@ -7,6 +7,7 @@ import Others from "../pages/Others";
 import Robot from "../pages/ThreeComp/Robot";
 import Tank from "../pages/ThreeComp/Tank";
 import CanvasDrawing from "../pages/Map/CanvasDrawing";
+import {BsPinMapFill} from "react-icons/all";
 
 const routes = [
   {
@@ -78,7 +79,7 @@ const routes = [
     path: "/others",
     redirect: "/others/1",
     name: "其它",
-    icon: <FaPoo size="20" />,
+    icon: <BsPinMapFill size="20" />,
     children: [
       {
         path: "/others/1",
