@@ -72,13 +72,13 @@ const Tools = ({}) => {
         client: null,
     })
     // 序列号输入框
-    const [value, setValue] = useState('');
+    const [value, setValue] = useState({
+        deviceId: '',
+        op_pos: 0
+    });
 
     // 设备列表
     const [list, setList] = useState([])
-
-    // loading
-    const [loading, setLoading] = useState(loadingConf);
 
     useEffect(() => {
         const {host, port, username, password} = conf;
@@ -124,37 +124,39 @@ const Tools = ({}) => {
             });
 
             connect.client.on("message", (deviceId, data) => {
-                const message = JSON.parse(data.toString());
-                const temp = list.map(f => {
-                    // return f.deviceId === message.deviceId ? {...message, properties: {...message.properties, cur_pos: 50}} : {...f};
-                    return f.deviceId === message.deviceId ? {...message, loading: false, initLoading: false, action: ''} : {...f};
-                })
-                // 设置对应的 record
-                setList([...temp])
-
-                // setLoading({...loadingConf, info: false})
+                console.log(deviceId)
+                console.log(JSON.parse(data.toString()))
+                if(deviceId){
+                    const message = JSON.parse(data.toString());
+                    const temp = list.map(f => {
+                        // return f.deviceId === message.deviceId ? {...message, properties: {...message.properties, cur_pos: 50}} : {...f};
+                        return f.deviceId === message.deviceId ? {...message, loading: false, initLoading: false, action: ''} : {...f};
+                    })
+                    // 设置对应的 record
+                    setList([...temp])
+                }
             });
         }
     }, [connect, list])
 
     const handleAdd = () => {
-        const flag = list.filter(f => f.deviceId === value);
+        const flag = list.filter(f => f.deviceId === value.deviceId);
         if (flag.length > 0) {
             message.error('设备已存在')
             return;
         }
         // 订阅此设备 组装topic
-        const subUrl = `/valve/${value}/properties/report`;
+        const subUrl = `/valve/${value.deviceId}/properties/report`;
         const pubUrl = `/valve/${value}/function/invoke`;
         connect.client.subscribe(subUrl, {qos: 0}, (err) => {
             if (err) return;
             // 更新 list
             setList([...list, {
-                ...record, deviceId: value, loading: true, initLoading: true
-            }].reverse())
+                ...record, deviceId: value.deviceId, loading: true, initLoading: true
+            }])
             connect.client.publish(
                 pubUrl,
-                '{"deviceId":"' + value + '","inputs":{"name":"op_get","value":"1"}',
+                '{"deviceId":"' + value.deviceId + '","inputs":{"name":"op_get","value":"1"}',
                 (err) => {
                     if (err) return;
                 })
@@ -162,15 +164,18 @@ const Tools = ({}) => {
     }
 
     // 序列号变更
-    const onChange = (e) => {
-        setValue(e.target.value);
+    const onChange = (e, act) => {
+        console.log(e.target.value, act);
+        setValue({
+            ...value,
+            [act]: e.target.value
+        });
     }
 
     const handleAction = (action, item, index) => {
         const subUrl = `/valve/${item.deviceId}/properties/report`;
         const pubUrl = `/valve/${item.deviceId}/function/invoke`;
         const temp = list.map(f => {
-            // return f.deviceId === message.deviceId ? {...message, properties: {...message.properties, cur_pos: 50}} : {...f};
             return f.deviceId === item.deviceId ? {...item, loading: true,  action} : {...f};
         })
         // 设置对应的 record
@@ -181,48 +186,44 @@ const Tools = ({}) => {
                 // 发送消息
                 connect.client.publish(
                     pubUrl,
-                    '{"deviceId":"' + item.deviceId + '","inputs":{"name":"op_get","value":"1"}',
+                    '{"deviceId":"' + item.deviceId + '","inputs":{"name":"op_open","value":"0"}',
                     (err) => {
                         if (err) return;
                     })
-
                 break;
             case 'close':
                 // 发送消息
                 connect.client.publish(
                     pubUrl,
-                    '{"deviceId":"' + item.deviceId + '","inputs":{"name":"op_get","value":"1"}',
+                    '{"deviceId":"' + item.deviceId + '","inputs":{"name":"op_close","value":"0"}',
                     (err) => {
                         if (err) return;
-                        // setList([
-                        //     ...list.map(f => {
-                        //         return f.deviceId === item.deviceId ? {...item, percent: item.percent -= 1} : {...f};
-                        //     })
-                        // ])
                     })
                 break;
             case 'stop':
                 // 发送消息
                 connect.client.publish(
                     pubUrl,
-                    '{"deviceId":"' + item.deviceId + '","inputs":{"name":"op_get","value":"1"}',
+                    '{"deviceId":"' + item.deviceId + '","inputs":{"name":"op_close","value":"0"}',
                     (err) => {
                         if (err) return;
-                        // setList([
-                        //     ...list.map(f => {
-                        //         return f.deviceId === item.deviceId ? {...item, percent: item.percent -= 1} : {...f};
-                        //     })
-                        // ])
                     })
                 break;
             case 'delete':
                 // 取消订阅设备，根据id 拼装 topic
                 connect.client.unsubscribe(subUrl, {}, (err) => {
                     if (err) return;
-
                     // 更新列表
                     setList([...list.filter(f => f.deviceId !== item.deviceId)])
                 })
+                break;
+            case 'set_pos':
+                connect.client.publish(
+                    pubUrl,
+                    '{"deviceId":"' + item.deviceId + '","inputs":{"name":"op_close","value":"' + value.op_pos + '"}',
+                    (err) => {
+                        if (err) return;
+                    })
                 break;
             default:
                 break;
@@ -232,7 +233,7 @@ const Tools = ({}) => {
     return (<div>
         <br/>
         <div className="flex gap-1" style={{width: 320}}>
-            <Input placeholder="序列号" value={value} onChange={onChange}/>
+            <Input placeholder="序列号" value={value.deviceId} onChange={(e) => onChange(e, 'deviceId')}/>
             <Button onClick={handleAdd}>添加设备</Button>
         </div>
         <br/>
@@ -282,6 +283,11 @@ const Tools = ({}) => {
                                 <Tag color={item.properties['op_open'] === 0 ? 'green' : ''}>开阀</Tag>
                             </div>
                         </Spin>
+                        <br/>
+                        <div className="flex">
+                            <Input value={value.op_pos} onChange={(e) => onChange(e, 'op_pos')} />
+                            <Button onClick={() => handleAction('set_pos', item, index)}>设定开度</Button>
+                        </div>
                     </Card>
                 </Badge.Ribbon>)
             })}
