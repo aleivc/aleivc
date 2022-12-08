@@ -220,7 +220,7 @@ const Tools = ({}) => {
             case 'set_pos':
                 connect.client.publish(
                     pubUrl,
-                    '{"deviceId":"' + item.deviceId + '","inputs":{"name":"op_close","value":"' + value.op_pos + '"}',
+                    '{"deviceId":"' + item.deviceId + '","inputs":{"name":"op_pos","value":"' + value.op_pos + '"}',
                     (err) => {
                         if (err) return;
                     })
