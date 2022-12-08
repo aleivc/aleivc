@@ -250,7 +250,7 @@ const Tools = ({}) => {
                                 <Spin spinning={item.loading && item.action === 'close'}><Text>关阀</Text></Spin>
                             </div>,
                             <div onClick={() => handleAction('stop', item, index)}>
-                                <Text>停止</Text>
+                                <Spin spinning={item.loading && item.action === 'stop'}><Text>停止</Text></Spin>
                             </div>,
                             <div onClick={() => handleAction('delete', item, index)}>
                                 <Text
@@ -281,12 +281,12 @@ const Tools = ({}) => {
                                 <Tag color={item.properties['value_trouble'] === 0 ? 'warning' : ''}>故障</Tag>
                                 <Tag color={item.properties['op_open'] === 0 ? 'green' : ''}>开阀</Tag>
                             </div>
-                        </Spin>
                         <br/>
                         <div className="flex">
                             <Input value={value.op_pos} onChange={(e) => onChange(e, 'op_pos')} />
                             <Button onClick={() => handleAction('set_pos', item, index)}>设定开度</Button>
                         </div>
+                        </Spin>
                     </Card>
                 </Badge.Ribbon>)
             })}
