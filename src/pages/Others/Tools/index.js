@@ -197,30 +197,30 @@ const Tools = () => {
                 // 发送消息
                 connect.client.publish(
                     pubUrl,
-                    '{"deviceId":"' + item.deviceId + '","inputs":{"name":"op_open","value":"0"}}',
+                    '{"deviceId":"' + item.deviceId + '","inputs":{"name":"op_open","value":"1"}}',
                     (err) => {
                         if (err) return;
-                        querryStatus(pubUrl);
+                        // querryStatus(pubUrl);
                     })
                 break;
             case 'close':
                 // 发送消息
                 connect.client.publish(
                     pubUrl,
-                    '{"deviceId":"' + item.deviceId + '","inputs":{"name":"op_close","value":"0"}}',
+                    '{"deviceId":"' + item.deviceId + '","inputs":{"name":"op_close","value":"1"}}',
                     (err) => {
                         if (err) return;
-                        querryStatus(pubUrl);
+                        // querryStatus(pubUrl);
                     })
                 break;
             case 'stop':
                 // 发送消息
                 connect.client.publish(
                     pubUrl,
-                    '{"deviceId":"' + item.deviceId + '","inputs":{"name":"op_close","value":"0"}}',
+                    '{"deviceId":"' + item.deviceId + '","inputs":{"name":"op_open","value":"0"}}',
                     (err) => {
                         if (err) return;
-                        querryStatus(pubUrl)
+                        // querryStatus(pubUrl)
                     })
                 break;
             case 'delete':
@@ -237,7 +237,7 @@ const Tools = () => {
                     '{"deviceId":"' + item.deviceId + '","inputs":{"name":"op_pos","value":"' + value.op_pos + '"}}',
                     (err) => {
                         if (err) return;
-                        querryStatus(pubUrl)
+                        // querryStatus(pubUrl)
                     })
                 break;
             default:
@@ -289,13 +289,11 @@ const Tools = () => {
                             <div className="text-center">当前阀位 {item.properties['cur_pos']}% / 目标阀位 - %</div>
                             <br/>
                             <div className="flex flex-wrap gap-1">
-                                <Tag color={item.properties['all_close'] === 0 ? 'green' : ''}>关到位</Tag>
-                                <Tag color={item.properties['all_open'] === 0 ? 'green' : ''}>开到位</Tag>
+                                <Tag color={item.properties['all_close'] === 1 ? 'green' : ''}>关到位</Tag>
+                                <Tag color={item.properties['all_open'] === 1 ? 'green' : ''}>开到位</Tag>
                                 <Tag
                                     color={item.properties['control_mode'] === 2 ? '' : 'green'}>{item.properties['control_mode'] === 0 ? '就地' : '远程'}</Tag>
-                                <Tag color={item.properties['op_close'] === 0 ? 'green' : ''}>关阀</Tag>
                                 <Tag color={item.properties['value_trouble'] === 0 ? 'warning' : ''}>故障</Tag>
-                                <Tag color={item.properties['op_open'] === 0 ? 'green' : ''}>开阀</Tag>
                             </div>
                             <br/>
                             <div className="flex">
