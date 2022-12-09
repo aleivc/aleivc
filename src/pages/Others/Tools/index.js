@@ -142,6 +142,15 @@ const Tools = () => {
         }
     }, [payload])
 
+    const querryStatus = (pubUrl) => {
+        connect.client.publish(
+            pubUrl,
+            '{"deviceId":"' + value.deviceId + '","inputs":{"name":"op_get","value":"1"}}',
+            (err) => {
+                if (err) return;
+            })
+    };
+
     const handleAdd = () => {
         const flag = list.filter(f => f.deviceId === value.deviceId);
         if (flag.length > 0) {
@@ -159,12 +168,7 @@ const Tools = () => {
             setList([...list, {
                 ...record, deviceId: value.deviceId, loading: true, initLoading: true
             }])
-            connect.client.publish(
-                pubUrl,
-                '{"deviceId":"' + value.deviceId + '","inputs":{"name":"op_get","value":"1"}}',
-                (err) => {
-                    if (err) return;
-                })
+            querryStatus(pubUrl);
         })
     }
 
@@ -196,6 +200,7 @@ const Tools = () => {
                     '{"deviceId":"' + item.deviceId + '","inputs":{"name":"op_open","value":"0"}}',
                     (err) => {
                         if (err) return;
+                        querryStatus(pubUrl);
                     })
                 break;
             case 'close':
@@ -205,6 +210,7 @@ const Tools = () => {
                     '{"deviceId":"' + item.deviceId + '","inputs":{"name":"op_close","value":"0"}}',
                     (err) => {
                         if (err) return;
+                        querryStatus(pubUrl);
                     })
                 break;
             case 'stop':
@@ -214,6 +220,7 @@ const Tools = () => {
                     '{"deviceId":"' + item.deviceId + '","inputs":{"name":"op_close","value":"0"}}',
                     (err) => {
                         if (err) return;
+                        querryStatus(pubUrl)
                     })
                 break;
             case 'delete':
@@ -230,6 +237,7 @@ const Tools = () => {
                     '{"deviceId":"' + item.deviceId + '","inputs":{"name":"op_pos","value":"' + value.op_pos + '"}}',
                     (err) => {
                         if (err) return;
+                        querryStatus(pubUrl)
                     })
                 break;
             default:
