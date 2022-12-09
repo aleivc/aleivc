@@ -4,7 +4,6 @@ import {
 import {useEffect, useState} from "react";
 import Meta from "antd/es/card/Meta";
 import mqtt from "mqtt/dist/mqtt";
-import {LoadingOutlined} from "@ant-design/icons";
 
 const {Text, Paragraph} = Typography;
 
@@ -22,10 +21,12 @@ const tags_map = {
 
 const deviceId = 'JSLF002-20221129002';
 
+const tempPubUrl = '/valve';
+const tempSubUrl = '/valve';
+
 const record = {
     deviceId,
     properties: {...tags_map},
-    percent: 0
 }
 
 const options = {
@@ -48,24 +49,7 @@ const conf = {
     password: "123456",
 }
 
-const loadingConf = {
-    open: false,
-    close: false,
-    stop: false,
-    delete: false,
-    info: true,
-}
-
-const antIcon = (
-    <LoadingOutlined
-        style={{
-            fontSize: 16,
-        }}
-        spin
-    />
-);
-
-const Tools = ({}) => {
+const Tools = () => {
     // 连接
     const [connect, setConnect] = useState({
         client: null,
@@ -78,6 +62,32 @@ const Tools = ({}) => {
 
     // 设备列表
     const [list, setList] = useState([])
+
+    // message
+    const [payload, setPayload] = useState({});
+
+    const updateFunc = (payload) => {
+        try {
+            const message = JSON.parse(payload.data.toString());
+
+            console.log(message)
+            if (message.properties && payload.topic) {
+                const temp = list.map(f => {
+                    return f.deviceId === message.deviceId ? {
+                        ...message,
+                        loading: false,
+                        initLoading: false,
+                        action: ''
+                    } : {...f};
+                })
+                console.log(temp)
+                // 设置对应的 record
+                setList(() => [...temp])
+            }
+        } catch (err) {
+            throw err
+        }
+    }
 
     useEffect(() => {
         const {host, port, username, password} = conf;
@@ -122,21 +132,18 @@ const Tools = ({}) => {
                 });
             });
 
-            connect.client.on("message", (deviceId, data) => {
-                console.log(deviceId)
-                console.log(JSON.parse(data.toString()))
-                if(deviceId){
-                    const message = JSON.parse(data.toString());
-                    const temp = list.map(f => {
-                        // return f.deviceId === message.deviceId ? {...message, properties: {...message.properties, cur_pos: 50}} : {...f};
-                        return f.deviceId === message.deviceId ? {...message, loading: false, initLoading: false, action: ''} : {...f};
-                    })
-                    // 设置对应的 record
-                    setList([...temp])
-                }
+            // 这样挂载了太多的监听函数，这样不对，它只能挂载一次
+            connect.client.on("message", (topic, data) => {
+                setPayload({topic, data})
             });
         }
-    }, [connect, list])
+    }, [connect])
+
+    useEffect(() => {
+        if(payload.topic){
+            updateFunc(payload)
+        }
+    }, [payload])
 
     const handleAdd = () => {
         const flag = list.filter(f => f.deviceId === value.deviceId);
@@ -147,6 +154,8 @@ const Tools = ({}) => {
         // 订阅此设备 组装topic
         const subUrl = `/valve/${value.deviceId}/properties/report`;
         const pubUrl = `/valve/${value}/function/invoke`;
+        // const subUrl = tempSubUrl;
+        // const pubUrl = tempPubUrl
         connect.client.subscribe(subUrl, {qos: 0}, (err) => {
             if (err) return;
             // 更新 list
@@ -155,7 +164,7 @@ const Tools = ({}) => {
             }])
             connect.client.publish(
                 pubUrl,
-                '{"deviceId":"' + value.deviceId + '","inputs":{"name":"op_get","value":"1"}',
+                '{"deviceId":"' + value.deviceId + '","inputs":{"name":"op_get","value":"1"}}',
                 (err) => {
                     if (err) return;
                 })
@@ -174,18 +183,20 @@ const Tools = ({}) => {
     const handleAction = (action, item, index) => {
         const subUrl = `/valve/${item.deviceId}/properties/report`;
         const pubUrl = `/valve/${item.deviceId}/function/invoke`;
+        // const subUrl = tempSubUrl;
+        // const pubUrl = tempPubUrl;
         const temp = list.map(f => {
-            return f.deviceId === item.deviceId ? {...item, loading: true,  action} : {...f};
+            return f.deviceId === item.deviceId ? {...item, loading: true, action} : {...f};
         })
         // 设置对应的 record
-        setList([...temp])
+        setList( [...temp])
 
         switch (action) {
             case 'open':
                 // 发送消息
                 connect.client.publish(
                     pubUrl,
-                    '{"deviceId":"' + item.deviceId + '","inputs":{"name":"op_open","value":"0"}',
+                    '{"deviceId":"' + item.deviceId + '","inputs":{"name":"op_open","value":"0"}}',
                     (err) => {
                         if (err) return;
                     })
@@ -194,7 +205,7 @@ const Tools = ({}) => {
                 // 发送消息
                 connect.client.publish(
                     pubUrl,
-                    '{"deviceId":"' + item.deviceId + '","inputs":{"name":"op_close","value":"0"}',
+                    '{"deviceId":"' + item.deviceId + '","inputs":{"name":"op_close","value":"0"}}',
                     (err) => {
                         if (err) return;
                     })
@@ -203,7 +214,7 @@ const Tools = ({}) => {
                 // 发送消息
                 connect.client.publish(
                     pubUrl,
-                    '{"deviceId":"' + item.deviceId + '","inputs":{"name":"op_close","value":"0"}',
+                    '{"deviceId":"' + item.deviceId + '","inputs":{"name":"op_close","value":"0"}}',
                     (err) => {
                         if (err) return;
                     })
@@ -213,13 +224,13 @@ const Tools = ({}) => {
                 connect.client.unsubscribe(subUrl, {}, (err) => {
                     if (err) return;
                     // 更新列表
-                    setList([...list.filter(f => f.deviceId !== item.deviceId)])
+                    setList( [...list.filter(f => f.deviceId !== item.deviceId)])
                 })
                 break;
             case 'set_pos':
                 connect.client.publish(
                     pubUrl,
-                    '{"deviceId":"' + item.deviceId + '","inputs":{"name":"op_pos","value":"' + value.op_pos + '"}',
+                    '{"deviceId":"' + item.deviceId + '","inputs":{"name":"op_pos","value":"' + value.op_pos + '"}}',
                     (err) => {
                         if (err) return;
                     })
@@ -281,11 +292,11 @@ const Tools = ({}) => {
                                 <Tag color={item.properties['value_trouble'] === 0 ? 'warning' : ''}>故障</Tag>
                                 <Tag color={item.properties['op_open'] === 0 ? 'green' : ''}>开阀</Tag>
                             </div>
-                        <br/>
-                        <div className="flex">
-                            <Input value={value.op_pos} onChange={(e) => onChange(e, 'op_pos')} />
-                            <Button onClick={() => handleAction('set_pos', item, index)}>设定开度</Button>
-                        </div>
+                            <br/>
+                            <div className="flex">
+                                <Input value={value.op_pos} onChange={(e) => onChange(e, 'op_pos')}/>
+                                <Button onClick={() => handleAction('set_pos', item, index)}>设定开度</Button>
+                            </div>
                         </Spin>
                     </Card>
                 </Badge.Ribbon>)

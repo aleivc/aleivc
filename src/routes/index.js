@@ -1,9 +1,10 @@
-import {FaWater, FaCube, FaHome, FaMapSigns, FaPoo } from "react-icons/fa";
+import {FaWater, FaCube, FaHome, FaMapSigns, FaMailchimp } from "react-icons/fa";
 
 import Home from "../pages/Home/index";
 import Map from "../pages/Map/index";
 import Shoe from "../pages/ThreeComp/Shoe";
 import Others from "../pages/Others";
+import Test from '../pages/Test'
 import Robot from "../pages/ThreeComp/Robot";
 import Tank from "../pages/ThreeComp/Tank";
 import CanvasDrawing from "../pages/Map/CanvasDrawing";
@@ -46,7 +47,6 @@ const routes = [
     redirect: "/three/1",
     name: "3D内容",
     icon: <FaCube size="20" />,
-    divider: true,
     children: [
       {
         path: "/three/1",
@@ -75,19 +75,34 @@ const routes = [
     ],
   },
   {
-    path: "/others",
-    redirect: "/others/1",
+    path: "/test",
+    redirect: "/test/1",
     name: "其它",
-    icon: <FaWater size="20" />,
+    icon: <FaMailchimp size={20} />,
+    divider: true,
     children: [
       {
-        path: "/others/1",
-        element: <Others />,
+        path: "/test/1",
+        element: <Test />,
         title: "待添加",
         desc: "待添加",
       },
     ],
   },
+  {
+    path: '/others',
+    redirect: "/others/1",
+    name: '启闭机',
+    icon: <FaWater size="20" />,
+    children: [
+      {
+        path: '/others/1',
+        element: <Others />,
+        title: 'test',
+        desc: 'test',
+      }
+    ]
+  }
 ];
 
 export default routes;
