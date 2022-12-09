@@ -1,5 +1,5 @@
 import {
-    Badge, Button, Card, Input, message, Progress, Skeleton, Spin, Tag, Typography,
+    Badge, Button, Card, Input, message, Progress, Spin, Tag, Typography,
 } from "antd";
 import {useEffect, useState} from "react";
 import Meta from "antd/es/card/Meta";
@@ -20,9 +20,6 @@ const tags_map = {
 }
 
 const deviceId = 'JSLF002-20221129002';
-
-const tempPubUrl = '/valve';
-const tempSubUrl = '/valve';
 
 const record = {
     deviceId,
@@ -153,7 +150,7 @@ const Tools = () => {
         }
         // 订阅此设备 组装topic
         const subUrl = `/valve/${value.deviceId}/properties/report`;
-        const pubUrl = `/valve/${value}/function/invoke`;
+        const pubUrl = `/valve/${value.deviceId}/function/invoke`;
         // const subUrl = tempSubUrl;
         // const pubUrl = tempPubUrl
         connect.client.subscribe(subUrl, {qos: 0}, (err) => {
@@ -180,7 +177,7 @@ const Tools = () => {
         });
     }
 
-    const handleAction = (action, item, index) => {
+    const handleAction = (action, item) => {
         const subUrl = `/valve/${item.deviceId}/properties/report`;
         const pubUrl = `/valve/${item.deviceId}/function/invoke`;
         // const subUrl = tempSubUrl;
