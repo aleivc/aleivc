@@ -145,6 +145,8 @@ const Tools = () => {
 
             // 这样挂载了太多的监听函数，这样不对，它只能挂载一次
             connect.client.on("message", (topic, data) => {
+                console.log("topic: ", topic);
+                console.log("data: ", data);
                 setPayload({ topic, data });
             });
         }
@@ -218,7 +220,7 @@ const Tools = () => {
 
         switch (action) {
             case "open":
-                // 发送消息
+                // 发送消息 
                 connect.client.publish(
                     pubUrl,
                     '{"deviceId":"' +

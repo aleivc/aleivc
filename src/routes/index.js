@@ -2,6 +2,7 @@ import {FaWater, FaCube, FaHome, FaMapSigns, FaMailchimp } from "react-icons/fa"
 
 import Home from "../pages/Home/index";
 import Map from "../pages/Map/index";
+import Water from '../pages/Map/Water'
 import Shoe from "../pages/ThreeComp/Shoe";
 import Others from "../pages/Others";
 import Test from '../pages/Test'
@@ -40,6 +41,12 @@ const routes = [
         title: "地图，图片标注",
         desc: "绘制流动线条",
       },
+      {
+        path: "/map/4",
+        element: <Water />,
+        title: "启闭机",
+        desc: "临港启闭机地图展示",
+      }
     ],
   },
   {
